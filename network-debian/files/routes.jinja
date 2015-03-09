@@ -6,37 +6,33 @@
 # !!! CHANGES WILL BE LOST !!!
 #
 
-# host specific routes
-# ====================
+# interface specific routes
+# =========================
 #
-{%- for interface in host.net.interfaces %}
+{%- for iname,interface in interfaces.iteritems() %}
 
 #
-# {{ interface.name }}
+# {{ iname }}
 #
 
 {%- if interface.routes is defined %}
-{%- for route in interface.routes %}
-# {{ route.name }} ({{ interface.iface }})
-ip route add {{ route.ipaddr }}/{{ route.netmask }} via {{ route.gateway }} || true
+{%- for route,data in interface.get('routes',{}).iteritems() %}
+# {{ data.get('comment','') }} ({{iname}})
+ip route add {{ route }} via {{ data.via }} || true
 {%- endfor %}
 {%- else %}
-# no host specific routes defined
+# no interface specific routes defined
 {%- endif %}
 
 {%- endfor %}
 
-# zone specific routes
-# ====================
+# global routes
+# =============
 #
-{%- if zone.routes is defined %}
-{%- for route in zone.routes %}
-# {{ route.name }}
-ip route add {{ route.ipaddr }}/{{ route.netmask }} via {{ route.gateway }} || true
+{%- for route,data in routes.iteritems() %}
+# {{ data.get('comment','') }} 
+ip route add {{ route }} via {{ data.via }} || true
 {%- endfor %}
-{% else %}
-# no zone specific routes defined
-{%- endif %}
 
 # ipv6 DAD race condition workaround
 # ==================================

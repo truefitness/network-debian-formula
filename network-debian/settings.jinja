@@ -1,27 +1,9 @@
 # settings for network states
 #
-{%- set host    = salt['pillar.get']('host', {}) %}
-{%- set cluster = salt['pillar.get']('cluster', {}) %}
-{%- set zone    = salt['pillar.get']('zone', {}) %}
-{%- set host_default = salt['pillar.get']('host_default', {}) %}
-
-{%- set net_default = host_default.get('net', {}) %}
-{%- set interface_default = net_default.get('interfaces', {
- 'type' : 'inet',
- 'proto': 'static',
- 'enabled': true
-}) %}
+{%- set network    = salt['pillar.get']('network', {}) %}
 
 {% set config = {} %}
-{% do config.update({ 'host': {} }) %}
-{% do config.update({ 'cluster': {} }) %}
-{% do config.update({ 'zone': {} }) %}
-
-
-
-{# Setup host configuration #}
-{% do config.host.update({ 'net': {} }) %}
-{% do config.host.net.update({ 'interfaces': [] }) %}
+{% do config.update({ 'interfaces': [] }) %}
 
 
 {% for interface in host.net.interfaces %}
@@ -41,9 +23,3 @@
   {% do config.host.net.interfaces.append(item) %}
 {% endfor %}
 
-
-{# Setup cluster configuration #}
-{% do config.update({ 'cluster': cluster }) %}
-
-{# Setup zone configuration #}
-{% do config.update({ 'zone': zone }) %}

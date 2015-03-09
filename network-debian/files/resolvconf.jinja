@@ -4,30 +4,13 @@
 # !!! THIS FILE IS MANAGED !!!
 # !!! CHANGES WILL BE LOST !!!
 #
-{% if pillar.host.dnsserver is defined %}
 
-{% for nameserver in pillar.host.dnsserver %}
+{% for nameserver in dnsserver %}
 nameserver {{ nameserver }}
 {%- endfor %}
 
-{% else %}
+domain {{ dnsdomain }}
 
-{% for nameserver in zone.dnsserver %}
-nameserver {{ nameserver }}
-{%- endfor %}
-
-{% endif %}
-
-{%- if (pillar.host.dnsdomain is defined) %}
-domain {{ pillar.host.dnsdomain }}
-{%- elif (zone.dnsdomain is defined) %}
-domain {{ zone.dnsdomain }}
-{%- endif %}
-
-{%- if (pillar.host.dnssearch is defined) %}
-search {% for search in pillar.host.dnssearch %}{{ search }} {% endfor %}
-{%- elif (zone.dnssearch is defined) %}
-search {% for search in zone.dnssearch %}{{ search }} {% endfor %}
-{%- endif %}
+search {% for search in dnssearch %}{{ search }} {% endfor %}
 
 

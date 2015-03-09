@@ -3,7 +3,6 @@
 #
 
 {%- from 'network-debian/map.jinja' import map with context %}
-{%- from 'network-debian/settings.jinja' import config with context %}
 
 # remove resolvconf package - we want to control resolv.conf ourselves.
 #
@@ -20,9 +19,7 @@ network_remove_resolvconf:
     - template: jinja
     - source:   salt://network-debian/files/interfaces.jinja
     - context:
-      host:    {{ config.host }}
-      cluster: {{ config.cluster }}
-      zone:    {{ config.zone }}
+      interfaces: {{ pillar.network.get('interfaces',{}) }}
 
 /etc/network/routes:
   file.managed:
@@ -32,9 +29,8 @@ network_remove_resolvconf:
     - template: jinja
     - source:   salt://network-debian/files/routes.jinja
     - context:
-      host:    {{ config.host }}
-      cluster: {{ config.cluster }}
-      zone:    {{ config.zone }}
+      interfaces: {{ pillar.network.get('interfaces',{}) }}
+      routes: {{ pillar.network.get('routes',{}) }}
 
 /etc/resolv.conf:
   file.managed:
@@ -44,7 +40,8 @@ network_remove_resolvconf:
     - template: jinja
     - source:   salt://network-debian/files/resolvconf.jinja
     - context:
-      host:    {{ config.host }}
-      cluster: {{ config.cluster }}
-      zone:    {{ config.zone }}
+      dnsserver: {{ pillar.network.get('dnsserver',[]) }}
+      dnsdomain: {{ pillar.network.get('dnsdomain','localnet') }}
+      dnssearch: {{ pillar.network.get('dnssearch','localnet') }}
+
 
