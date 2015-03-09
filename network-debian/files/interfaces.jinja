@@ -16,14 +16,12 @@ iface lo inet loopback
 {%- if (interface.enabled is defined) and (interface.enabled is sameas true) %}
 auto {{ name }}
 {%- endif %}
-{% if interface.type == "inet6" %}
+
 iface {{ name }} {{ interface.type }} {{ interface.proto }}
+{%- if interface.address is defined %}
   address {{ interface.address }}
   netmask {{ interface.netmask }}
   up /etc/network/routes
-{% else %}
-iface {{ name }} {{ interface.type }} {{ interface.proto }}
-  address {{ interface.address }}/{{ interface.netmask }}
-  up /etc/network/routes
-{% endif %}  
+{%- endif %}  
+
 {%- endfor %}
