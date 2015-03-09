@@ -10,14 +10,20 @@ iface lo inet loopback
 
 {%- for name,interface in interfaces.iteritems() %}
 
+{%- if interface.name is defined %}
+{%- set iname = interface.name %}
+{%- else %}
+{%- set iname = name %}
+{%- endif %}
+
 # {{ name }}
 # {{ interface.get('comment','') }}
 #
 {%- if (interface.enabled is defined) and (interface.enabled is sameas true) %}
-auto {{ name }}
+auto {{ iname }}
 {%- endif %}
 
-iface {{ name }} {{ interface.type }} {{ interface.proto }}
+iface {{ iname }} {{ interface.type }} {{ interface.proto }}
 {%- if interface.address is defined %}
   address {{ interface.address }}
   netmask {{ interface.netmask }}
