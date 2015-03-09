@@ -41,7 +41,7 @@ network_remove_resolvconf:
     - source:   salt://network-debian/files/resolvconf.jinja
     - context:
       dnsserver: {{ pillar.network.get('dnsserver',[]) }}
-      dnsdomain: {{ pillar.network.get('dnsdomain','localnet') }}
-      dnssearch: {{ pillar.network.get('dnssearch','localnet') }}
+      dnsdomain: {{ pillar.network.get('dnsdomain', 'localnet') }}
+      dnssearch: {{ pillar.network.get('dnssearch', []) }}
 
 
