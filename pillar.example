@@ -1,0 +1,23 @@
+network:
+  dnsdomain: int.foobar.ninja
+  dnsservers:
+    - 192.168.1.1
+  dnssearch:
+    - int.foobar.ninja
+    - int.foobar.wtf
+
+  routes:
+    '0.0.0.0/0':
+      via: 192.168.1.1
+      comment: 'default route'
+
+  interfaces:
+    'eth0':
+      comment: "test interface"
+      enabled: True
+      proto: static
+      type: inet
+      address: 192.168.1.130
+      netmask: 24
+
+
