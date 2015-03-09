@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+# route configuration script
+#
+# !!! THIS FILE IS MANAGED !!!
+# !!! CHANGES WILL BE LOST !!!
+#
+
+# host specific routes
+# ====================
+#
+{%- for interface in host.net.interfaces %}
+
+#
+# {{ interface.name }}
+#
+
+{%- if interface.routes is defined %}
+{%- for route in interface.routes %}
+# {{ route.name }} ({{ interface.iface }})
+ip route add {{ route.ipaddr }}/{{ route.netmask }} via {{ route.gateway }} || true
+{%- endfor %}
+{%- else %}
+# no host specific routes defined
+{%- endif %}
+
+{%- endfor %}
+
+# zone specific routes
+# ====================
+#
+{%- if zone.routes is defined %}
+{%- for route in zone.routes %}
+# {{ route.name }}
+ip route add {{ route.ipaddr }}/{{ route.netmask }} via {{ route.gateway }} || true
+{%- endfor %}
+{% else %}
+# no zone specific routes defined
+{%- endif %}
+
+# ipv6 DAD race condition workaround
+# ==================================
+# https://lists.debian.org/debian-devel/2012/11/msg00038.html
+#
+sleep 1
+

@@ -1,0 +1,28 @@
+#
+# interfaces configuration
+#
+# !!! THIS FILE IS MANAGED !!!
+# !!! CHANGES WILL BE LOST !!!
+#
+
+auto lo
+iface lo inet loopback
+
+{%- for interface in host.net.interfaces %}
+
+# {{ interface.name }}
+#
+{%- if (interface.enabled is defined) and (interface.enabled is sameas true) %}
+auto {{ interface.iface }}
+{%- endif %}
+{% if interface.type == "inet6" %}
+iface {{ interface.iface }} {{ interface.type }} {{ interface.proto }}
+  address {{ interface.ipaddr }}
+  netmask {{ interface.netmask }}
+  up /etc/network/routes
+{% else %}
+iface {{ interface.iface }} {{ interface.type }} {{ interface.proto }}
+  address {{ interface.ipaddr }}/{{ interface.netmask }}
+  up /etc/network/routes
+{% endif %}  
+{%- endfor %}
