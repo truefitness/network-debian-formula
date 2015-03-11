@@ -1,6 +1,6 @@
 network:
   dnsdomain: int.foobar.ninja
-  dnsservers:
+  dnsserver:
     - 192.168.1.1
   dnssearch:
     - int.foobar.ninja
@@ -19,5 +19,12 @@ network:
       type: inet
       address: 192.168.1.130
       netmask: 24
+    'eth0ipv6':
+      name: 'eth0'
+      comment: "test interface"
+      proto: static
+      type: inet6
+      address: fd66::1
+      netmask: 64
 
 
