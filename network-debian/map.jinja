@@ -5,4 +5,4 @@
     'pkgs_vlan': ['vlan'],
     'confdir': '/etc/network',
 },
-}, grain='os', merge=salt['pillar.get']('network:lookup')) %}
+}, grain='os_family', merge=salt['pillar.get']('network:lookup')) %}
