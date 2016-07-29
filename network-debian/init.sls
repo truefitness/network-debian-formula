@@ -11,7 +11,7 @@ network_remove_resolvconf:
     - name: resolvconf
 
 
-/etc/network/interfaces:
+/etc/network/interfaces.d/wlan0.cfg:
   file.managed:
     - user: root
     - group: root
@@ -20,6 +20,16 @@ network_remove_resolvconf:
     - source:   salt://network-debian/files/interfaces.jinja
     - context:
       interfaces: {{ pillar.network.get('interfaces',{}) }}
+
+#/etc/network/interfaces:
+#  file.managed:
+#    - user: root
+#    - group: root
+#    - mode: 644
+#    - template: jinja
+#    - source:   salt://network-debian/files/interfaces.jinja
+#    - context:
+#      interfaces: {{ pillar.network.get('interfaces',{}) }}
 
 /etc/network/routes:
   file.managed:
@@ -43,5 +53,3 @@ network_remove_resolvconf:
       dnsserver: {{ pillar.network.get('dnsserver',[]) }}
       dnsdomain: {{ pillar.network.get('dnsdomain', 'localnet') }}
       dnssearch: {{ pillar.network.get('dnssearch', []) }}
-
-
