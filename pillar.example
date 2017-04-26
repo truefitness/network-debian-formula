@@ -17,17 +17,21 @@ network:
       enabled: True
       proto: static
       type: inet
+      mtu: 1500
       address: 192.168.1.130
       netmask: 24
     - name: 'eth0'
       comment: "test interface"
       proto: static
       type: inet6
+      mtu: 1500
       address: fd66::1
       netmask: 64
     - name: 'br0'
       comment: 'This is a bridge'
       proto: static
+      type: inet
+      mtu: 1500
       address: 192.168.2.130
       netmask: 24
       options:
