@@ -22,6 +22,9 @@ iface {{ interface.name }} {{ interface.type }} {{ interface.proto }}
   address {{ interface.address }}
   netmask {{ interface.netmask }}
   up /etc/network/routes
+{%- endif %}
+{%- if interface.mtu is defined %}
+  mtu {{ interface.mtu }}
 {%- endif %}  
 
 {%- if interface.options is defined %}
